@@ -10,6 +10,7 @@ function commentView(comment) {
   return {
     id: comment._id,
     content: comment.content,
+    authorId: comment.author?._id,
     author: comment.author?.name,
     authorRole: comment.author?.role,
     parentComment: comment.parentComment,
