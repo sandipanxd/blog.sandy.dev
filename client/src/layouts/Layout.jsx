@@ -2,7 +2,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 export default function Layout() {
-  const { user, logout } = useAuth();
+  const { user, isAuthor, logout } = useAuth();
   const navigate = useNavigate();
 
   function handleLogout() {
@@ -19,6 +19,7 @@ export default function Layout() {
         <div className="links">
           {user ? (
             <>
+              {isAuthor && <Link to="/admin">write</Link>}
               <span>{user.name}</span>
               <button type="button" onClick={handleLogout}>
                 log out
