@@ -50,6 +50,20 @@ router.get("/admin", requireAuth, requireAuthor, async (req, res, next) => {
   }
 });
 
+router.get("/admin/:id", requireAuth, requireAuthor, async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id).populate("author", "name");
+
+    if (!post) {
+      return next({ status: 404, message: "Post not found" });
+    }
+
+    res.json(postView(post, req.userId));
+  } catch (err) {
+    next(err);
+  }
+});
+
 router.get("/:slug", optionalAuth, async (req, res, next) => {
   try {
     const post = await Post.findOne({ slug: req.params.slug }).populate("author", "name");
