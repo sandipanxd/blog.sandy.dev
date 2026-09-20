@@ -34,6 +34,10 @@ export default function Layout() {
         </div>
       </nav>
       <Outlet />
+      <footer className="site-footer">
+        <Link to="/privacy">privacy</Link>
+        <Link to="/terms">terms</Link>
+      </footer>
     </div>
   );
 }
