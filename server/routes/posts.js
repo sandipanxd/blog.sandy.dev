@@ -32,9 +32,20 @@ function postView(post, userId) {
 
 router.get("/", optionalAuth, async (req, res, next) => {
   try {
-    const posts = await Post.find({ published: true })
-      .sort({ createdAt: -1 })
-      .populate("author", "name");
+    const q = req.query.q?.trim();
+    const filter = { published: true };
+    let query;
+
+    if (q) {
+      filter.$text = { $search: q };
+      query = Post.find(filter, { score: { $meta: "textScore" } }).sort({
+        score: { $meta: "textScore" },
+      });
+    } else {
+      query = Post.find(filter).sort({ createdAt: -1 });
+    }
+
+    const posts = await query.populate("author", "name");
     res.json(posts.map((post) => postView(post, req.userId)));
   } catch (err) {
     next(err);
