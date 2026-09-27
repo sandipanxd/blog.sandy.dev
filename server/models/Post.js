@@ -13,4 +13,6 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+postSchema.index({ title: "text", content: "text" });
+
 export default mongoose.model("Post", postSchema);
